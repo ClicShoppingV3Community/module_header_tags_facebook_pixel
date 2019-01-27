@@ -1,0 +1,2 @@
+module_header_tags_facebook_pixel_title = Souhaitez-vous utiliser le système  Facebook Pixel ?
+module_header_tags_facebook_pixel_description = Ajouter la balise Facebook pixel
