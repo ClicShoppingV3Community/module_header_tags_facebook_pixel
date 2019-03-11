@@ -69,10 +69,10 @@
         if ( isset($_GET['Checkout']) && isset($_GET['Success'])) {
 
            $QorderTotal = $CLICSHOPPING_Db->prepare('select value
-                                             from :table_orders_total
-                                             where orders_id = :orders_id
-                                             and (class = :class || class = :class1)
-                                           ');
+                                                     from :table_orders_total
+                                                     where orders_id = :orders_id
+                                                     and (class = :class || class = :class1)
+                                                   ');
           $QorderTotal->bindInt(':orders_id', $order_id);
           $QorderTotal->bindValue(':class', 'ot_total');
           $QorderTotal->bindValue(':class', 'TO');
@@ -97,16 +97,16 @@
           $product_ids = '';
 
           $QorderProducts = $CLICSHOPPING_Db->prepare('select op.products_id,
-                                                       pd.products_name,
-                                                       op.final_price,
-                                                       op.products_quantity
-                                                from :table_orders_products op,
-                                                     :table_products_description pd,
-                                                     :table_languages l
-                                                where op.orders_id = :orders_id
-                                                and op.products_id = pd.products_id
-                                                and l.code =:code
-                                               ');
+                                                             pd.products_name,
+                                                             op.final_price,
+                                                             op.products_quantity
+                                                      from :table_orders_products op,
+                                                           :table_products_description pd,
+                                                           :table_languages l
+                                                      where op.orders_id = :orders_id
+                                                      and op.products_id = pd.products_id
+                                                      and l.code =:code
+                                                     ');
           $QorderProducts->execute();
 
           $QorderProducts->bindInt(':orders_id', $order_id);
