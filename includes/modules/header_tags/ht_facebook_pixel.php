@@ -1,20 +1,21 @@
 <?php
-/**
- *
- *  @copyright 2008 - https://www.clicshopping.org
- *  @Brand : ClicShopping(Tm) at Inpi all right Reserved
- *  @Licence GPL 2 & MIT
- *  @licence MIT - Portion of osCommerce 2.4
- *  @Info : https://www.clicshopping.org/forum/trademark/
- *
- */
+  /**
+   *
+   * @copyright 2008 - https://www.clicshopping.org
+   * @Brand : ClicShopping(Tm) at Inpi all right Reserved
+   * @Licence GPL 2 & MIT
+   * @licence MIT - Portion of osCommerce 2.4
+   * @Info : https://www.clicshopping.org/forum/trademark/
+   *
+   */
 
   use ClicShopping\OM\Registry;
   use ClicShopping\OM\CLICSHOPPING;
 
   use ClicShopping\Sites\Shop\Pages\Checkout\Classes\CheckoutSuccess;
 
-  class ht_facebook_pixel {
+  class ht_facebook_pixel
+  {
     public $code;
     public $group;
     public $title;
@@ -22,20 +23,22 @@
     public $sort_order;
     public $enabled = false;
 
-    public function __construct() {
+    public function __construct()
+    {
       $this->code = get_class($this);
       $this->group = basename(__DIR__);
 
       $this->title = CLICSHOPPING::getDef('module_header_tags_facebook_pixel_title');
       $this->description = CLICSHOPPING::getDef('module_header_tags_facebook_pixel_description');
 
-      if ( defined('MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS') ) {
+      if (defined('MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS')) {
         $this->sort_order = MODULE_HEADER_TAGS_FACEBOOK_PIXEL_SORT_ORDER;
         $this->enabled = (MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS == 'True');
       }
     }
 
-    public function execute() {
+    public function execute()
+    {
       $order_id = CheckoutSuccess::getCheckoutSuccessOrderId();
 
       if (!empty(MODULE_HEADER_TAGS_FACEBOOK_PIXEL_ID) && MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS == 'True') {
@@ -50,14 +53,14 @@
         $header_tag .= 'n.push=n;n.loaded=!0;n.version=\'2.0\';n.queue=[];t=b.createElement(e);t.async=!0; ';
         $header_tag .= 't.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, ';
         $header_tag .= 'document,\'script\',\'//connect.facebook.net/en_US/fbevents.js\'); ';
-        $header_tag .= 'fbq(\'init\', \'' .MODULE_HEADER_TAGS_FACEBOOK_PIXEL_ID . '\'); ';
+        $header_tag .= 'fbq(\'init\', \'' . MODULE_HEADER_TAGS_FACEBOOK_PIXEL_ID . '\'); ';
 
         $header_tag .= 'fbq(\'track\', "PageView"); ';
         $header_tag .= 'fbq(\'track\', \'ViewContent\'); ';
         $header_tag .= 'fbq(\'track\', \'Search\'); ';
         $header_tag .= 'fbq(\'track\', \'AddToCart\'); ';
 
-        if( isset($_GET['products_id'] ) ) {
+        if (isset($_GET['products_id'])) {
           $header_tag .= 'fbq(\'track\', "ViewContent"); ';
           $header_tag .= 'content_type: \'product\', ';
           $header_tag .= 'content_ids: [' . (int)$_GET['products_id'] . '], ';
@@ -66,9 +69,9 @@
 
         $header_tag .= '</script>' . "\n";
 
-        if ( isset($_GET['Checkout']) && isset($_GET['Success'])) {
+        if (isset($_GET['Checkout']) && isset($_GET['Success'])) {
 
-           $QorderTotal = $CLICSHOPPING_Db->prepare('select value
+          $QorderTotal = $CLICSHOPPING_Db->prepare('select value
                                                      from :table_orders_total
                                                      where orders_id = :orders_id
                                                      and (class = :class || class = :class1)
@@ -87,7 +90,7 @@
           $header_tag .= '<script type="text/javascript">' . "\n";
           $header_tag .= 'fbq(\'track\', \'Purchase\', { ';
           $header_tag .= 'content_type: \'product\', ';
-          $header_tag .= 'value: '. number_format($QorderTotal->valueDecimal('value'), 2, '.', '');
+          $header_tag .= 'value: ' . number_format($QorderTotal->valueDecimal('value'), 2, '.', '');
           $header_tag .= ', currency:  ';
           $header_tag .= $Qorder->value('currency');
           $header_tag .= ' , order_id: ';
@@ -125,7 +128,7 @@
 
         $CLICSHOPPING_Template->addBlock($header_tag, $this->group);
 
-        if( isset($_GET['products_id'] ) ) {
+        if (isset($_GET['products_id'])) {
           $footer_tag = '<!-- Facebook Pixel Code start -->' . "\n";
           $footer_tag .= '<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=' . MODULE_HEADER_TAGS_FACEBOOK_PIXEL_ID . '&ev=PageView&noscript=1"  /></noscript>' . "\n";
           $footer_tag .= '<!-- Facebook Pixel Code end -->' . "\n";
@@ -136,15 +139,18 @@
       }
     }
 
-    public function isEnabled() {
+    public function isEnabled()
+    {
       return $this->enabled;
     }
 
-    public function check() {
+    public function check()
+    {
       return defined('MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS');
     }
 
-    public function install() {
+    public function install()
+    {
       $CLICSHOPPING_Db = Registry::get('Db');
 
       $CLICSHOPPING_Db->save('configuration', [
@@ -188,11 +194,13 @@
       );
     }
 
-    public function remove() {
+    public function remove()
+    {
       return Registry::get('Db')->exec('delete from :table_configuration where configuration_key in ("' . implode('", "', $this->keys()) . '")');
     }
 
-    public function keys() {
+    public function keys()
+    {
       return array('MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS',
         'MODULE_HEADER_TAGS_FACEBOOK_PIXEL_ID',
         'MODULE_HEADER_TAGS_FACEBOOK_PIXEL_SORT_ORDER'
