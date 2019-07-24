@@ -1,3 +1,3 @@
 
- module_header_tags_facebook_pixel_title = Do you want use the Facebook Pixel system ?
+ module_header_tags_facebook_pixel_title = Do you want to use the Facebook Pixel system ?
  module_header_tags_facebook_pixel_description = Add Facebook pixel balise
