@@ -198,9 +198,9 @@
 
     public function keys()
     {
-      return array('MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS',
+      return ['MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS',
         'MODULE_HEADER_TAGS_FACEBOOK_PIXEL_ID',
         'MODULE_HEADER_TAGS_FACEBOOK_PIXEL_SORT_ORDER'
-      );
+      ];
     }
   }
