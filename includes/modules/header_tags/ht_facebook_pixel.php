@@ -16,8 +16,8 @@
 
   class ht_facebook_pixel
   {
-    public $code;
-    public $group;
+    public string $code;
+    public string $group;
     public string $title;
     public string $description;
     public ?int $sort_order = 0;
@@ -31,7 +31,7 @@
       $this->title = CLICSHOPPING::getDef('module_header_tags_facebook_pixel_title');
       $this->description = CLICSHOPPING::getDef('module_header_tags_facebook_pixel_description');
 
-      if (defined('MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS')) {
+      if (\defined('MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS')) {
         $this->sort_order = MODULE_HEADER_TAGS_FACEBOOK_PIXEL_SORT_ORDER;
         $this->enabled = (MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS == 'True');
       }
@@ -146,7 +146,7 @@
 
     public function check()
     {
-      return defined('MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS');
+      return \defined('MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS');
     }
 
     public function install()
