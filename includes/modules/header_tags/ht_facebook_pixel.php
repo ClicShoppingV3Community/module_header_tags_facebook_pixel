@@ -16,8 +16,8 @@
 
   class ht_facebook_pixel
   {
-    public string $code;
-    public string $group;
+    public $code;
+    public $group;
     public string $title;
     public string $description;
     public ?int $sort_order = 0;
@@ -34,6 +34,9 @@
       if (\defined('MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS')) {
         $this->sort_order = MODULE_HEADER_TAGS_FACEBOOK_PIXEL_SORT_ORDER;
         $this->enabled = (MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS == 'True');
+        if (empty(MODULE_HEADER_TAGS_FACEBOOK_PIXEL_ID) ) {
+          $this->enabled = false;
+        }
       }
     }
 
@@ -42,9 +45,9 @@
       $order_id = CheckoutSuccess::getCheckoutSuccessOrderId();
 
       if (!empty(MODULE_HEADER_TAGS_FACEBOOK_PIXEL_ID) && MODULE_HEADER_TAGS_FACEBOOK_PIXEL_STATUS == 'True') {
-
         $CLICSHOPPING_Template = Registry::get('Template');
         $CLICSHOPPING_Db = Registry::get('Db');
+        $CLICSHOPPING_ProductsCommon = Registry::get('ProductsCommon');
 
         $header_tag = '<!--  Facebook Pixel Code start -->' . "\n";
 
@@ -60,10 +63,10 @@
         $header_tag .= 'fbq(\'track\', \'Search\'); ';
         $header_tag .= 'fbq(\'track\', \'AddToCart\'); ';
 
-        if (isset($_GET['products_id'])) {
+        if ($CLICSHOPPING_ProductsCommon->getId()) {
           $header_tag .= 'fbq(\'track\', "ViewContent"); ';
           $header_tag .= 'content_type: \'product\', ';
-          $header_tag .= 'content_ids: [' . (int)$_GET['products_id'] . '], ';
+          $header_tag .= 'content_ids: [' . (int)$CLICSHOPPING_ProductsCommon->getId() . '], ';
           $header_tag .= '}]) ' . "\n";
         }
 
@@ -128,7 +131,7 @@
 
         $CLICSHOPPING_Template->addBlock($header_tag, $this->group);
 
-        if (isset($_GET['products_id'])) {
+        if ($CLICSHOPPING_ProductsCommon->getId()) {
           $footer_tag = '<!-- Facebook Pixel Code start -->' . "\n";
           $footer_tag .= '<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=' . MODULE_HEADER_TAGS_FACEBOOK_PIXEL_ID . '&ev=PageView&noscript=1"  /></noscript>' . "\n";
           $footer_tag .= '<!-- Facebook Pixel Code end -->' . "\n";
