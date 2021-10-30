@@ -72,7 +72,7 @@
 
         $header_tag .= '</script>' . "\n";
 
-        if (isset($_GET['Checkout']) && isset($_GET['Success'])) {
+        if (isset($_GET['Checkout'], $_GET['Success'])) {
 
           $QorderTotal = $CLICSHOPPING_Db->prepare('select value
                                                      from :table_orders_total
